@@ -20,6 +20,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="blackjack.py" />
+    <Compile Include="card.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="deck.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.8" />
