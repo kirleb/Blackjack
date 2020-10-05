@@ -1,9 +1,10 @@
 class Card:
     """Used to create card objects"""
 
-    def __init__(self,suit,rank):
+    def __init__(self,suit,rank,ace):
         self.suit=suit
         self.rank=rank
+        self.ace = False
     
     def __str__(self):
         return f'{self.rank} of {self.suit}'

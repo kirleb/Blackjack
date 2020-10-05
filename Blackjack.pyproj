@@ -26,6 +26,9 @@
     <Compile Include="deck.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="hand.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.8" />
