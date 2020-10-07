@@ -26,7 +26,7 @@ class Hand:
 
     def hit(self,deck):
         '''Takes a deck, Hand recieves a card from the deck, updates the aces count and the hands score '''
-        rank_values_pairs = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7,
+        rank_value_pairs = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7,
         'Eight':8, 'Nine':9, 'Ten':10, 'Jack':10, 'Queen':10, 'King':10, 'Ace':11}
 
         card = deck.pop()
@@ -35,7 +35,7 @@ class Hand:
         if card.is_ace:
             self.aces += 1
 
-        self.score += rank_values_pairs[card.rank]
+        self.score += rank_value_pairs[card.rank]
 
         if self.score > 21 and self.aces > 1:
             self.score -= 10
