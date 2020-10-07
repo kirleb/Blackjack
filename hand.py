@@ -37,11 +37,7 @@ class Hand:
 
         self.score += rank_value_pairs[card.rank]
 
-        if self.score > 21 and self.aces > 1:
+        if self.score > 21 and self.aces > 0:
             self.score -= 10
             self.aces -= 1
-
-
-    
-        
-
+           

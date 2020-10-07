@@ -51,37 +51,36 @@ def retrieve_player_names(number_of_players):
             print('Ensure your name is unique')
     return player_names
 
-def generate_player_dict(player_names,play_deck):
-    '''Returns a dictionary with players (including the dealer) and their hands'''
+def generate_banks(player_names):
     while True:
         starting_balance = input('Please select a low, mid or high starting balance: ').lower()
         if starting_balance == 'mid':
-            starting_balance = 100
-            break
+           starting_balance = 100
         elif starting_balance == 'low':
-            starting_balance = 50
-            break
+           starting_balance = 50
         elif starting_balance == 'high':
-            starting_balance = 500
-            break
-        print('Please type low, mid or high')
+           starting_balance = 500
+        else:
+           print('Please type low, mid or high')
+           continue
+        return [Bank(player_name,starting_balance) for player_name in player_names]
 
-
-    player_dict = {name: {'hand':Hand(name,play_deck),'bank':Bank(name,starting_balance)} for name in player_names}
+def generate_player_dict(player_names,play_deck,banks):
+    '''Returns a dictionary with players (including the dealer) and their hands'''
+    player_dict = {name: {'hand':Hand(name,play_deck),'bank':bank} for name,bank in zip(player_names,banks)}
     player_dict['dealer']= {'hand': Hand('dealer',play_deck), 'bank': None}
-
 
     return player_dict
 
 def place_bet(players_dict):
-    banks = [hand_bank['bank'].balance for hand_bank in players_dict.values() if hand_bank['bank'] != None]
+    balances = [hand_bank['bank'].balance for hand_bank in players_dict.values() if hand_bank['bank'] != None]
     while True:
         try:
             bet = int(input('Place a bet: £'))
         except (TypeError,ValueError) :
             print('Please enter an integer')
             continue
-        if bet > min(banks):
+        if bet > min(balances):
             print('Everyone must have at least the bet amount in their bank')
         elif bet == 0:
             print('Please place a bet')
@@ -103,6 +102,7 @@ def take_turn(players_dict,player_name,deck):
             print(hand)
             if hand.score > 21:
                 hand.score = -21
+                print(f'Sorry {player_name} you\'ve bust')
                 input()
                 break
             elif hand.score == 21:
@@ -117,6 +117,8 @@ def dealers_turn(players_dict,deck):
     while True:
         if hand.score > 21:
             hand.score = -21
+            print('The dealer has bust good luck')
+            input()
             return
         elif hand.score == 21 or hand.score > max(scores):
             return
@@ -130,8 +132,9 @@ def tie_breaker(winners):
 
     tie_break_deck = generate_deck()
     shuffle(tie_break_deck)
+
     while True:
-        draws = {winner: None for winner in winners}
+        draws = {}
         for winner in winners:
             new_card = tie_break_deck.pop()
             print(f'{winner} drew the {new_card}')
@@ -142,34 +145,73 @@ def tie_breaker(winners):
             continue
         return winners[0]
 
+def update_player_banks(players_dict,winner,player_names,bet):
+    if winner == 'dealer':                           #if the winner is the dealer everyone loses their bets
+        print('Dealer wins tough luck')
+        for player_name in player_names:
+            players_dict[player_name]['bank'].lose(bet)
+    else:
+        print(f'{winner} wins Congratulations!!!!')
+        players_dict[winner]['bank'].collect_bets(bet,player_names,players_dict) #add money to winner minus from losers
 
-    
+    input()
 
+    banks = [hand_bank['bank'] for hand_bank in players_dict.values() if hand_bank['bank'] != None]
+    print('\n'.join([str(bank) for bank in banks]))
 
+    return (players_dict,banks)
+
+def remove_losers(players_dict,player_names,banks):
+    losers = [player_name for player_name in player_names if players_dict[player_name]['bank'].balance == 0]         
+    banks = [bank for bank in banks if bank.balance != 0]
+    for loser in losers:
+        print(f'{loser} you are out of money. Goodbye')
+        player_names.remove(loser)
+    return (player_names,banks)
+
+def play_again(banks): #True if yes, false if no
+    if len(banks) == 0:
+        print('Sorry you are all out of money')
+        return False
+    while True:
+        play_again = input('Play again? ').lower()
+        if play_again != 'yes' and play_again != 'no':
+            print('Please enter yes or no')
+            continue
+        return play_again == 'yes'
 
 def main():
-    player_names = retrieve_player_names(retrieve_number_of_players()) #get player names and start a deck
+    player_names = retrieve_player_names(retrieve_number_of_players()) #get player names,banks and start a deck
+    banks = generate_banks(player_names)
     play_deck = []
 
-    play_deck = generate_deck() if len(play_deck) < 30 else play_deck #put cards in the deck (if there are less than 30) and shuffle
-    shuffle(play_deck)
+    while True:
+        play_deck = generate_deck() if len(play_deck) < 30 else play_deck #put cards in the deck (if there are less than 30) and shuffle
+        shuffle(play_deck)
 
-    players_dict = generate_player_dict(player_names,play_deck) #generate player dict and bet
-    bet = place_bet(players_dict)
+        players_dict = generate_player_dict(player_names,play_deck,banks) #generate player dict and bet
+        bet = place_bet(players_dict)
 
-    for player in player_names:                          # each player and dealer takes their turn
-        take_turn(players_dict,player,play_deck)
-    dealers_turn(players_dict,play_deck)
+        for player in player_names:                          # each player and dealer takes their turn
+            take_turn(players_dict,player,play_deck)
+        dealers_turn(players_dict,play_deck)
 
-    names_scores = {name: players_dict[name]['hand'].score for name in players_dict.keys()}
-    winners = [name for name,score in names_scores.items() if score == max(names_scores.values())] # list of player names with highest scores
+        names_scores = {name: players_dict[name]['hand'].score for name in players_dict.keys()}
+        winners = [name for name,score in names_scores.items() if score == max(names_scores.values())] # list of player names with highest scores
 
-    winner = winners[0] if len(winners) == 1 else tie_breaker(winners)
-    print(winner)
-
+        winner = winners[0] if len(winners) == 1 else tie_breaker(winners) #sets the winner, tie breaks if requires (highest card draw)
     
+        players_dict,banks = update_player_banks(players_dict,winner,player_names,bet)        
 
+        input()
 
+        player_names,banks = remove_losers(players_dict,player_names,banks)
+        
+        if play_again(banks):
+            continue
+        print('Thanks for playing my game')
+        input()
+        return
 
 if __name__ == '__main__':
     main()
