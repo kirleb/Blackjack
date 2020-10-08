@@ -9,7 +9,7 @@ class Bank:
         self.name = name
         self.balance = starting_balance
         self.is_dealer = name =='dealer'
-        if not is_dealer:
+        if not self.is_dealer:
             print(f'{self.name}\'s bank has £{self.balance}')
 
     @classmethod
