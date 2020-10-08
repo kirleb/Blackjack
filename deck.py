@@ -11,9 +11,10 @@
   #      '''shuffles deck object'''
      #   shuffle(self.deck)
 
-    #suits = ('Hearts', 'Spades', 'Clubs', 'Diamonds') 
+    #suits = ('Hearts', 'Spades', 'Clubs', 'Diamonds')
 
     #ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
     #'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
-    
-#kept here for personal reference but the Deck class is really not required it is just a list of card objects
+
+#kept here for personal reference but the Deck class is really not
+#required it is just a list of card objects

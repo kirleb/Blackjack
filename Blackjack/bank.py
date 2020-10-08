@@ -1,11 +1,12 @@
+'''Contains Bank class'''
 class Bank:
     """
-    Keeps track of the players money when they start, 
+    Keeps track of the players money when they start,
     win or lose a game
     """
 
     def __init__(self, name, starting_balance):
-        
+
         self.name = name
         self.balance = starting_balance
         self.is_dealer = name =='dealer'
@@ -22,7 +23,7 @@ class Bank:
          else 50 if string == 'low'\
          else 'This shouldn\'t be reachable if validated properly'
         return cls(name,string)
-            
+
     def __str__(self):
         '''String representation of the bank'''
         return f"{self.name} has £{self.balance} in their bank"
@@ -35,13 +36,13 @@ class Bank:
                                       'high starting balance: ').lower()
             if starting_balance not in ['low','mid','high']:
                 continue
-            return [Bank.from_string(player_name,starting_balance) 
+            return [Bank.from_string(player_name,starting_balance)
                    for player_name in player_names]
-    
+
     @staticmethod
     def update_banks(players_dict,winner,player_names,bet):
         '''
-        Returns player_dict and banks with updated banks 
+        Returns player_dict and banks with updated banks
         depending on who won
         '''
         winner_message = 'Dealer wins tough luck' if winner == 'dealer'\
@@ -49,7 +50,7 @@ class Bank:
         print(winner_message)
         #add money to winner minus from losers
         players_dict[winner]['bank']\
-        .collect_bets(bet,player_names,players_dict) 
+        .collect_bets(bet,player_names,players_dict)
         input()
         banks = [players_dict[player]['bank']
                 for player in players_dict.keys()
@@ -57,10 +58,10 @@ class Bank:
         print('\n'.join([str(bank) for bank in banks]))
         return (players_dict,banks)
 
-    def collect_bets(self,bet,remaining_players,players_dict): 
-        '''Adds money to winner and subtracts from losers'''                                             
+    def collect_bets(self,bet,remaining_players,players_dict):
+        '''Adds money to winner and subtracts from losers'''
         if not self.is_dealer:
-            #adds money from dealer and other players, 
+            #adds money from dealer and other players,
             #added an extra 1 as bet is subracted in next step
             self.balance += (bet*(len(remaining_players)+1))
         for player in remaining_players:

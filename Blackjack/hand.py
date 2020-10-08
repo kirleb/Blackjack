@@ -1,7 +1,8 @@
+'''Contains Hand class'''
 class Hand:
     """
-    Creates a player or dealer hand, the hand can contain cards and has a score count and aces count.
-    Upon construction 2 cards are immediately added.
+    Creates a player or dealer hand, the hand can contain cards and has a score
+    count and aces count. Upon construction 2 cards are immediately added.
     """
 
     def __init__(self,name,deck):
@@ -17,9 +18,9 @@ class Hand:
 
     def __str__(self):
         '''Returns a different string depending on if it is a player or dealer hand'''
-        card_list = [str(card) for card in self.cards]   
+        card_list = [str(card) for card in self.cards]
         if self.is_dealer:
-            return f'The dealer\'s cards are \n'\
+            return 'The dealer\'s cards are \n'\
                     +',\n'.join(card_list)\
                     +f'\nTheir score is {self.score}'
         return f'{self.name}\'s cards are \n'\
@@ -42,4 +43,3 @@ class Hand:
         if self.score > 21 and self.aces > 0:
             self.score -= 10
             self.aces -= 1
-           

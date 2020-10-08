@@ -1,3 +1,4 @@
+'''Contains Card class'''
 class Card:
     """Used to create card objects"""
 
