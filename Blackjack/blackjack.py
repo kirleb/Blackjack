@@ -32,13 +32,15 @@ def retrieve_player_names(number_of_players):
     '''
     Takes number of players, asks for players names and returns them in a
     list any name is fine as long as it isn't a duplicate, dealer or empty
+    and is at least 1 character long and less than 10. spaces before and after
+    will be trimmed
     '''
     player_names = []
     while len(player_names) < number_of_players:
-        new_name = input(f'Enter a Name {len(player_names)+1}: ')
+        new_name = input(f'Enter a Name {len(player_names)+1}: ').strip()
         if new_name == 'dealer':
             print('You cannot be the dealer')
-        elif new_name == '':
+        elif not 0 < len(new_name) <10:
             pass
         elif new_name in player_names:
             print('Ensure your name is unique')
