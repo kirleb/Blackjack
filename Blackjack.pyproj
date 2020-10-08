@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7ce49f09-bd87-43ae-a076-14c2c893a68e}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>blackjack.py</StartupFile>
+    <StartupFile>Blackjack\blackjack.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -19,17 +19,17 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="bank.py">
+    <Compile Include="Blackjack\bank.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="blackjack.py" />
-    <Compile Include="card.py">
+    <Compile Include="Blackjack\blackjack.py" />
+    <Compile Include="Blackjack\card.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="deck.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hand.py">
+    <Compile Include="Blackjack\hand.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -46,6 +46,9 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Blackjack\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
