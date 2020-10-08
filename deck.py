@@ -17,8 +17,3 @@
     #'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
     
 #kept here for personal reference but the Deck class is really not required it is just a list of card objects
-
-
-        
-
-
