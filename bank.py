@@ -31,8 +31,8 @@ class Bank:
     def generate_banks(player_names):
         '''Returns a list of banks with low mid or high balance'''
         while True:
-            starting_balance = input('Please select a low, mid or\
-                                      high starting balance: ').lower()
+            starting_balance = input('Please select a low, mid or '\
+                                      'high starting balance: ').lower()
             if starting_balance not in ['low','mid','high']:
                 continue
             return [Bank.from_string(player_name,starting_balance) 
